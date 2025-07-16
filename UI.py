@@ -39,6 +39,7 @@ def setBox(p, color, d=dimensions, w=screen_width, h=screen_height-100):
     else:
         #erase
         grid[(boxx, boxy)] = 0
+        colorGrid()
     # drawGrid(w, h)
 
 def mousePosToGrid(pos):
