@@ -29,35 +29,40 @@ def drawGrid(w, h, d=dimensions):
 
 
 def setBox(p, color, d=dimensions, w=screen_width, h=screen_height-100):
-    x, y = p
-    size = (int(w / d[0]), int(h / d[1]))
-    boxx, boxy = (int(x / size[0]), int(y / size[1]))
+    boxx, boxy = mousePosToGrid(p)
     if color != BLACK:
         if grid[(boxx, boxy)] == 1:
             return None
         grid[(boxx, boxy)] = 1
-        anti_alias()
-        color_grid()
+        antiAlias(p)
+        colorGrid()
     else:
         #erase
         grid[(boxx, boxy)] = 0
     # drawGrid(w, h)
 
-def anti_alias():
-    for key, value in grid.items():
-        x, y = key
-        surrounding_vals = 0.80*value
-        surrounding_vals += 0.04*grid.get((x+1, y), 0)
-        surrounding_vals += 0.04*grid.get((x-1, y), 0)
-        surrounding_vals += 0.04*grid.get((x, y+1), 0)
-        surrounding_vals += 0.04*grid.get((x, y-1), 0)
-        surrounding_vals += 0.01*grid.get((x+1, y+1), 0)
-        surrounding_vals += 0.01*grid.get((x-1, y+1), 0)
-        surrounding_vals += 0.01*grid.get((x+1, y-1), 0)
-        surrounding_vals += 0.01*grid.get((x-1, y-1), 0)
-        grid[key] = surrounding_vals
+def mousePosToGrid(pos):
+    x, y = pos
+    size = int(screen_width / dimensions[0]), int((screen_height-100) / dimensions[1])
+    return int(x / size[0]), int(y / size[1])
 
-def color_grid():
+def antiAlias(pos):
+    x, y = mousePosToGrid(pos)
+    for x_pos in range(x-1, x+1):
+        for y_pos in range(y-1, y+1):
+            surrounding_vals = 0.7*grid.get((x_pos, y_pos), 0)
+            surrounding_vals += 0.05*grid.get((x_pos+1, y_pos), 0)
+            surrounding_vals += 0.05*grid.get((x_pos-1, y_pos), 0)
+            surrounding_vals += 0.05*grid.get((x_pos, y_pos+1), 0)
+            surrounding_vals += 0.05*grid.get((x_pos, y_pos-1), 0)
+            surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos+1), 0)
+            surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos+1), 0)
+            surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos-1), 0)
+            surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos-1), 0)
+            if surrounding_vals >= grid.get((x_pos, y_pos), 0):
+                grid[x_pos, y_pos] = surrounding_vals
+
+def colorGrid():
     for key, value in grid.items():
         x, y = key
         size = (int(screen_width / 28), int((screen_height-100) / 28))
