@@ -49,19 +49,20 @@ def mousePosToGrid(pos):
 
 def antiAlias(pos):
     x, y = mousePosToGrid(pos)
-    for x_pos in range(x-1, x+1):
-        for y_pos in range(y-1, y+1):
-            surrounding_vals = 0.7*grid.get((x_pos, y_pos), 0)
-            surrounding_vals += 0.05*grid.get((x_pos+1, y_pos), 0)
-            surrounding_vals += 0.05*grid.get((x_pos-1, y_pos), 0)
-            surrounding_vals += 0.05*grid.get((x_pos, y_pos+1), 0)
-            surrounding_vals += 0.05*grid.get((x_pos, y_pos-1), 0)
-            surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos+1), 0)
-            surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos+1), 0)
-            surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos-1), 0)
-            surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos-1), 0)
-            if surrounding_vals >= grid.get((x_pos, y_pos), 0):
-                grid[x_pos, y_pos] = surrounding_vals
+    for i in range(2):
+        for x_pos in range(x-1, x+2):
+            for y_pos in range(y-1, y+2):
+                surrounding_vals = 0.7*grid.get((x_pos, y_pos), 0)
+                surrounding_vals += 0.05*grid.get((x_pos+1, y_pos), 0)
+                surrounding_vals += 0.05*grid.get((x_pos-1, y_pos), 0)
+                surrounding_vals += 0.05*grid.get((x_pos, y_pos+1), 0)
+                surrounding_vals += 0.05*grid.get((x_pos, y_pos-1), 0)
+                surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos+1), 0)
+                surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos+1), 0)
+                surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos-1), 0)
+                surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos-1), 0)
+                if surrounding_vals >= grid.get((x_pos, y_pos), 0):
+                    grid[x_pos, y_pos] = surrounding_vals
 
 def colorGrid():
     for key, value in grid.items():
