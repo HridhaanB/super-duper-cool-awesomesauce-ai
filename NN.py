@@ -18,11 +18,11 @@ def ReLu(x):
     return 0
 
 class Layer:
-    def __innit__(self, size, connections, pLayer):
+    def __innit__(self, size, connections, prev_layer):
         self.size = size
         self.biasVector = vertify([0]*size)
-        self.postmatrix = np.array([[random.random() for a in range(pLayer.size)] for b in range(size)])
-        self.previousLayer = pLayer
+        self.postmatrix = np.array([[random.random() for a in range(prev_layer.size)] for b in range(size)])
+        self.previousLayer = prev_layer
         self.nextLayer = None
     def setActNext(self, actfunc=ReLu):
         self.nextLayer.setAct(actfunc(self.postmatrix.dot(self.actVector) + self.nextLayer.biasVector))
