@@ -62,7 +62,8 @@ def antiAlias(pos):
                 surrounding_vals += 0.0125*grid.get((x_pos+1, y_pos-1), 0)
                 surrounding_vals += 0.0125*grid.get((x_pos-1, y_pos-1), 0)
                 if surrounding_vals >= grid.get((x_pos, y_pos), 0):
-                    grid[x_pos, y_pos] = surrounding_vals
+                    if grid.get((x_pos, y_pos), None) is not None:
+                        grid[x_pos, y_pos] = surrounding_vals
 
 def colorGrid():
     for key, value in grid.items():
