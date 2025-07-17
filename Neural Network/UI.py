@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import QUIT
 
 pygame.init()
+pygame.font.init()
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -13,6 +14,8 @@ dimensions = (28, 28)
 SCREEN = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('super duper cool awesomesauce ai')
 SCREEN.fill(BLACK)
+
+font = pygame.font.Font('freesansbold.ttf', 32)
 
 mouse = pygame.mouse
 clock = pygame.time.Clock()
@@ -76,21 +79,28 @@ def colorGrid():
         pygame.draw.rect(SCREEN, WHITE, bg_rect)
         pygame.draw.rect(SCREEN, color, rect)
 
-
-
 def runRender():
     global grid
 
     drawGrid(screen_width, screen_height-100)
     while True:
 
+        SCREEN.fill(BLACK)
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
+        text = font.render('Press space to clear and k to send to AI', True, WHITE)
+
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             grid = {(x, y): 0.0 for x in range(dimensions[0]) for y in range(dimensions[1])}
+            text = font.render('Cleared screen', True, WHITE)
+        if pygame.key.get_pressed()[pygame.K_k]:
+            text = font.render('sent', True, WHITE)
+
+        SCREEN.blit(text, (15, 730))
 
         if mouse.get_pressed()[0]:
             mouse_pos = mouse.get_pos()
@@ -98,6 +108,5 @@ def runRender():
         if mouse.get_pressed()[2]:
             mouse_pos = mouse.get_pos()
             setBox(mouse_pos, True)
-
         colorGrid()
         pygame.display.update()

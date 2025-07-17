@@ -31,22 +31,26 @@ class Layer:
     def setNext(self, next):
         self.nextLayer = next
         next.previousLayer = self
-    def update(self, gradient):
-        weights_index = 0
-        biases_index = 0
-        for index, value in enumerate(gradient):
-            if index % 2 == 0:
-                self.postmatrix[weights_index] += value
-                weights_index += 1
-            else:
-                self.biasVector[biases_index] += value
-                biases_index += 1
+
 def NNout(inLay, Grid):
     inLay.setAct(vertify([Grid[x] for x in Grid]))
     while inLay.nextLayer!=None:
         inLay.setActNext()
         inLay = inLay.nextLayer
     return inLay.actVector()
+
+def update(gradient, inLayer):
+    gradient_index = 0
+    layer = inLayer
+    while layer.nextLayer is not None:
+        for j in range(len(layer.postmatrix)):
+            for k in range(len(layer.postmatrix[i])):
+                layer.postmatrix[j][k] += gradient[gradient_index]
+                gradient_index += 1
+        for j in range(len(layer.biasVector)):
+            layer.biasVector[j] += gradient[gradient_index]
+            gradient_index += 1
+        layer = layer.nextLayer
 
 def vertify(L):
     return np.array([[x] for x in L])
