@@ -64,6 +64,7 @@ def get_gradient(lastLayer, answer):
     dadz = np.where(lastLayer.zVector<=0, 0, 1)
     dzdw = lastLayer.previousLayer.actVector
     dzdb = 1
+    print(dCda, dadz, dzdw)
     dCdw = dCda*dadz*dzdw
     dCdb = dCda*dadz*dzdb
     part = np.vstack((dCdw, dCdb))
@@ -112,3 +113,5 @@ input_layer.setNext(hidden_layer1)
 hidden_layer1.setNext(hidden_layer2)
 hidden_layer2.setNext(output_layer)
 
+    
+    
