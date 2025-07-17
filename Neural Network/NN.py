@@ -31,7 +31,16 @@ class Layer:
     def setNext(self, next):
         self.nextLayer = next
         next.previousLayer = self
-
+    def update(self, gradient):
+        weights_index = 0
+        biases_index = 0
+        for index, value in enumerate(gradient):
+            if index % 2 == 0:
+                self.postmatrix[weights_index] += value
+                weights_index += 1
+            else:
+                self.biasVector[biases_index] += value
+                biases_index += 1
 def NNout(inLay, Grid):
     inLay.setAct(vertify([Grid[x] for x in Grid]))
     while inLay.nextLayer!=None:

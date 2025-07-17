@@ -28,9 +28,9 @@ def drawGrid(w, h, d=dimensions):
             pygame.draw.rect(SCREEN, WHITE, rect, 1)
 
 
-def setBox(p, color, d=dimensions, w=screen_width, h=screen_height-100):
+def setBox(p, erase, d=dimensions, w=screen_width, h=screen_height-100):
     boxx, boxy = mousePosToGrid(p)
-    if color != BLACK:
+    if not erase:
         if grid.get((boxx, boxy), 1) == 1:
             return None
         grid[(boxx, boxy)] = 1
@@ -39,6 +39,7 @@ def setBox(p, color, d=dimensions, w=screen_width, h=screen_height-100):
     else:
         #erase
         grid[(boxx, boxy)] = 0
+        antiAlias((boxx, boxy))
         #colorGrid()
     # drawGrid(w, h)
 
@@ -93,10 +94,10 @@ def runRender():
 
         if mouse.get_pressed()[0]:
             mouse_pos = mouse.get_pos()
-            setBox(mouse_pos, WHITE)
+            setBox(mouse_pos, False)
         if mouse.get_pressed()[2]:
             mouse_pos = mouse.get_pos()
-            setBox(mouse_pos, BLACK)
+            setBox(mouse_pos, True)
 
         colorGrid()
         pygame.display.update()
