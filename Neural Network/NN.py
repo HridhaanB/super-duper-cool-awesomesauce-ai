@@ -2,9 +2,16 @@ from keras.datasets import mnist
 from matplotlib import pyplot
 import numpy as np
 import random
+import pickle
 
 print("a")
 (train_X, train_y), (test_X, test_y) = mnist.load_data()
+
+wbfile = open('weights_and_biases', 'rb')
+wb = pickle.load(wbfile)
+for keys in wb:
+    print(keys, '=>', wb[keys])
+wbfile.close()
 
 for i in range(9):  
     pyplot.subplot(330 + 1 + i)
@@ -20,8 +27,12 @@ def ReLU(x):
 class Layer:
     def __innit__(self, size, connections, prev_layer):
         self.size = size
-        self.biasVector = vertify([0]*size)
-        self.postmatrix = np.array([[random.random() for a in range(prev_layer.size)] for b in range(size)])
+        if wb is None:
+            self.postmatrix = np.array([[random.random() for a in range(prev_layer.size)] for b in range(size)])
+            self.biasVector = vertify([0]*size)
+        else:
+            self.postmatrix = wb[0]
+            self.biasVector = wb[1]
         self.previousLayer = prev_layer
         self.nextLayer = None
     def setActNext(self, actfunc=ReLU):
@@ -51,6 +62,16 @@ def update(gradient, inLayer):
             layer.biasVector[j] += gradient[gradient_index]
             gradient_index += 1
         layer = layer.nextLayer
+
+def getWeightsAndBiases(inLayer):
+    layer = inLayer
+    weights = []
+    biases = []
+    while layer.nextLayer is not None:
+        weights.append(layer.postmatrix)
+        biases.append(layer.biasVector)
+        layer = layer.nextLayer
+    return weights, biases
 
 def vertify(L):
     return np.array([[x] for x in L])
