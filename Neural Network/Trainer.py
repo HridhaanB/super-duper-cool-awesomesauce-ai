@@ -10,3 +10,12 @@ for win in range(30):
 
 print(NNout(input_layer, test_X[0]))
 print(test_y[0])
+
+
+wb = getStuff(input_layer)
+
+wbfile = open('weights_and_biases', 'ab')
+
+# source, destination
+pickle.dump(wb, wbfile)
+wbfile.close()
