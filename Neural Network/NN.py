@@ -8,10 +8,6 @@ import pickle
 #print("a")
 (train_X, train_y), (test_X, test_y) = mnist.load_data()
 
-wbfile = open('weights_and_biases', 'rb')
-wb = pickle.load(wbfile)
-wbfile.close()
-
 for i in range(9):  
     pyplot.subplot(330 + 1 + i)
     pyplot.imshow(train_X[i], cmap=pyplot.get_cmap('gray'))
@@ -120,16 +116,6 @@ def getStuff(inLayer):
     if inLayer.nextLayer is not None:
         return [inLayer.biasVector, inLayer.postmatrix] + getStuff(inLayer.nextLayer)
     return [inLayer.biasVector]
-
-def get_weights_and_biases(inLayer):
-    layer = inLayer
-    weights = []
-    biases = []
-    if layer.nextLayer is not None:
-        weights.append(layer.postmatrix)
-        biases.append(layer.biasVector)
-
-    return weights, biases
 
 input_layer = Layer(784, None)
 hidden_layer1 = Layer(200, input_layer)
