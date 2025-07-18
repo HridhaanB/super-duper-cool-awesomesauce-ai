@@ -3,16 +3,10 @@ from matplotlib import pyplot
 import numpy as np
 import random
 import math
-import pickle
 
 #print("a")
 (train_X, train_y), (test_X, test_y) = mnist.load_data()
 
-for i in range(9):  
-    pyplot.subplot(330 + 1 + i)
-    pyplot.imshow(train_X[i], cmap=pyplot.get_cmap('gray'))
-    #print(train_X[i])
-pyplot.show()
 #print(len(train_X))
 def sigmoid(x):
     return 1/(1+math.exp(min(x*-1*0.01, 20)))
@@ -91,7 +85,7 @@ def get_gradient(lastLayer, answer):
 def get_averaged_gradient(lastLayer, inLay, window):
     L = len(train_y)
     endgrad = vertify([0.0 for _ in range(173890)]) #change to get real len
-    cutoff = 30
+    cutoff = 10
     for x, y in zip(train_X[window*cutoff:(window+1)*cutoff], train_y[window*cutoff:(window+1)*cutoff]):
         NNout(inLay, x/255)
         endgrad += get_gradient(lastLayer, y)
@@ -103,7 +97,7 @@ def update(gradient, inLayer):
     layer = inLayer
     while layer.nextLayer is not None:
         for j in range(len(layer.postmatrix)):
-            for k in range(len(layer.postmatrix[i])):
+            for k in range(len(layer.postmatrix[0])):
                 layer.postmatrix[j][k] -= gradient[gradient_index]
                 gradient_index += 1
         if layer.previousLayer is not None:
