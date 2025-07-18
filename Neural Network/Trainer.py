@@ -1,19 +1,12 @@
 from keras.datasets import mnist
 from matplotlib import pyplot
 import pickle
-import NN
-print("a")
-(train_X, train_y), (test_X, test_y) = mnist.load_data()
+from NN import *
 
-print(train_X[1])
+for win in range(30):
+    update(get_averaged_gradient(output_layer, input_layer, win), input_layer)
+    print(win)
+#print(getStuff(input_layer))
 
-#set in layer
-inlayer = []
-
-wb = NN.getWeightsAndBiases(inlayer)
-
-wbfile = open('weights_and_biases', 'ab')
-
-# source, destination
-pickle.dump(wb, wbfile)
-wbfile.close()
+print(NNout(input_layer, test_X[0]))
+print(test_y[0])
